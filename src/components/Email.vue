@@ -1,68 +1,56 @@
 <template>
-  <div class="background">
-    <div class="container">
-      <div class="screen">
-        <div class="screen-header">
-          <div class="screen-header-left">
-            <div class="screen-header-button close"></div>
-            <div class="screen-header-button maximize"></div>
-            <div class="screen-header-button minimize"></div>
+  <section>
+    <div class="form-container">
+        <p>Hire Me</p>
+        <form class="form" ref="form"  @submit.prevent="sendMail" >
+          <div class="form-group">
+            <input name="from_name" placeholder="name" type="text" :value="inputFieldReset" required>
           </div>
-          <div class="screen-header-right">
-            <div class="screen-header-ellipsis"></div>
-            <div class="screen-header-ellipsis"></div>
-            <div class="screen-header-ellipsis"></div>
+          <div class="form-group">
+            <input name="email" placeholder="email" type="email" :value="inputFieldReset" required>
           </div>
-        </div>
-        <div class="screen-body">
-          <div class="screen-body-item left">
-            <div class="app-title">
-              <span>Hire</span>
-              <span class="me">Me</span>
-            </div>
-            <div class="app-contact">CONTACT INFO : +234 818 840 0911</div>
+          <div class="form-group">
+            <input  name="subject" placeholder="subject" type="text" :value="inputFieldReset" required>
           </div>
-          <div class="screen-body-item">
-            <form class="app-form" ref="form"  @submit.prevent="sendMail" >
-              <div class="app-form-group">
-                <input class="app-form-control" name="name" placeholder="name" type="text" >
-              </div>
-              <div class="app-form-group">
-                <input class="app-form-control" name="email" placeholder="email" type="email">
-              </div>
-              <div class="app-form-group message">
-                <textarea class="app-form-control" name="message" placeholder="email" type="text"></textarea>
-              </div>
-              <div class="app-form-group buttons">
-                <button class="app-form-button"  >SEND</button>
-              </div>
-            </form>
+          <div class="form-group">
+            <textarea class="text-area" name="message" placeholder="message" type="text" :value="inputFieldReset" required></textarea>
           </div>
-        </div>
+          <div class="form-group">
+            <input class="submit" type="submit" name="send" />
+          </div>
+        </form>
       </div>
-   </div>
-  </div>
+  </section>
 </template> 
 
 
 
 <script>
 import emailjs from 'emailjs-com';
-
+import {ref} from 'vue';
 
 export default {
   setup() {
+    const form = ref(null);
+    const inputFieldReset = ref(null);
 
     const sendMail = () => {
-      emailjs.sendForm('service_1g9lrll', 'template_ttmh426', this.$refs.form, 'user_prA4Swm8nuJiz2vv8iByN')
-      .then((result) => {
-        console.log('SUCCESS!', result);
+      emailjs.sendForm('service_3auy1ro', 'template_ojg0m3p', form.value, 'user_lbqwiyRhPGlpQH6G9j1Ng')
+      .then(() => {
+        alert('Message sent!');
+         inputFieldReset.value = ""; 
       }, (error) => {
-        console.log('FAILED...', error);
+        alert('Message not sent', error);
       });
+     
     }
+
+   
+
     return{
-      sendMail
+      sendMail,
+      form,
+      inputFieldReset
     }
   }
 }
